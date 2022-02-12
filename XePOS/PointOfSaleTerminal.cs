@@ -5,15 +5,23 @@ namespace XePOS.Application;
 
 public class PointOfSaleTerminal
 {
-    private IList<Product> _productList;
-    private IDictionary<Product, int> _cart; // (p.Key,p.Value) = (Product, Quantity)
+    /// <summary>
+    /// Product pricing information
+    /// </summary>
+    private IEnumerable<Product> _productList;
+
+    /// <summary>
+    /// Store (Product, Quantity) as (Key, Value) pair
+    /// </summary>
+    private IDictionary<Product, int> _cart;
 
     public PointOfSaleTerminal()
     {
         _productList = new List<Product>();
         _cart = new ConcurrentDictionary<Product, int>();
     }
-    public void SetPricing(List<Product> productList)
+
+    public void SetPricing(IEnumerable<Product> productList)
     {
         // product code must be unique
         if (productList.DistinctBy(p => p.Code).Count() != productList.Count())
@@ -21,11 +29,6 @@ public class PointOfSaleTerminal
 
         // set pricing
         _productList = productList;
-    }
-
-    public void ClearCart()
-    {
-        _cart = new ConcurrentDictionary<Product, int>();
     }
 
     /// <summary>
@@ -57,15 +60,17 @@ public class PointOfSaleTerminal
         return _cart[p];
     }
 
-    public void ScanProductRange(string range)
+    /// <summary>
+    /// Scan a product. Return product quantity
+    /// </summary>
+    public void ClearCart()
     {
-        Console.WriteLine($"Scanned products: {range}");
-        _ = range.Select(c => ScanProduct(c.ToString())).ToArray();
+        _cart = new ConcurrentDictionary<Product, int>();
     }
 
     public decimal CalculateTotal() => _cart.Sum(p => GetProductTotal(p.Key,p.Value));
 
-    private decimal GetProductTotal(Product p, int quantity) 
+    private static decimal GetProductTotal(Product p, int quantity) 
         => p.Promotion.HasValue 
             ? p.Promotion.Value.BundlePrice * (quantity / p.Promotion.Value.BundleQuantity) +
               p.Price * (quantity % p.Promotion.Value.BundleQuantity)
