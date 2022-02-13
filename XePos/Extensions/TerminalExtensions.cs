@@ -19,7 +19,7 @@ public static class TerminalExtensions
     /// </summary>
     public static void PrintCheckout(this PointOfSaleTerminal terminal)
     {
-        Console.WriteLine($"Total price: {terminal.CalculateTotal()}");
+        Console.WriteLine($"> Total price: {terminal.CalculateTotal()}");
         terminal.ClearCart();
     }
 }
