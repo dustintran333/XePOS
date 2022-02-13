@@ -1,54 +1,39 @@
 ﻿using XePOS.Application;
-using XePOS.Application.Entities;
+using XePOS.Application.Data;
 using XePOS.Application.Extensions;
 
 var terminal = new PointOfSaleTerminal();
 
-
-// Todo: cases
-// validation on product add
-// Empty pricing list
-// Duplicate Code - handled
-
 // initialize list
-var list = new List<Product>
-{
-    new() { Code = "A", Price = 1.25m, Promotion = new Promotion(3, 3m) },
-    new() { Code = "B", Price = 4.25m },
-    new() { Code = "C", Price = 1.00m, Promotion = new Promotion(6, 5m)},
-    new() { Code = "D", Price = 0.75m },
-    new() { Code = "F", Price = 0.75m, Promotion = new Promotion(10000000,2m)}
-};
+var list = PricingData.GetData();
 terminal.SetPricing(list);
 
 // Todo: cases
-// invalid product
 // empty cart
-terminal.ScanProduct("A");
-terminal.ScanProduct("B");
-terminal.ScanProduct("C");
-terminal.ScanProduct("D");
-terminal.ScanProduct("A");
-terminal.ScanProduct("B");
-terminal.ScanProduct("A");
+var scanOrder = "ABCDABA";
+
+foreach (var code in scanOrder) terminal.ScanProduct(code.ToString());
+
 var result = terminal.CalculateTotal();
-Console.WriteLine(result);
+
+Console.WriteLine("Scan order: " + scanOrder);
+Console.WriteLine("Total price: " + result);
+
 terminal.ClearCart();
 
-terminal.ScanProductRange("ABCDABA");
-Console.WriteLine(terminal.CalculateTotal());
-terminal.ClearCart();
+
+//using terminal extensions
 
 terminal.ScanProductRange("CCCCCCC");
-Console.WriteLine(terminal.CalculateTotal());
-terminal.ClearCart();
+terminal.PrintCheckout();
 
 terminal.ScanProductRange("ABCD");
-Console.WriteLine(terminal.CalculateTotal());
-terminal.ClearCart();
+terminal.PrintCheckout();
 
-terminal.ScanProductRange("FF");
-Console.WriteLine(terminal.CalculateTotal());
-terminal.ClearCart();
+terminal.ScanProductRange("");
+terminal.PrintCheckout();
 
-//terminal.ScanProduct("E"); //ToDo: handle invalid product
+terminal.ScanProductRange(null);
+terminal.PrintCheckout();
+
+Console.ReadLine();
