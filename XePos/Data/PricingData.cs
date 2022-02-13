@@ -12,5 +12,5 @@ public static class PricingData
         new() { Code = "D", Price = 0.75m },
     };
 
-    public static IList<Product> GetPricing() => ProductPricing;
+    public static IList<Product> GetData() => ProductPricing;
 }
