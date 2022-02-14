@@ -7,8 +7,7 @@ public struct Promotion
     [Range(1, int.MaxValue)]
     public int BundleQuantity { get; set; }
 
-    [Required]
-    [Range(0.0, double.MaxValue, ErrorMessage = "Invalid price value")]
+    [Range(0.0, double.MaxValue, ErrorMessage = "Bundle price cannot be negative.")]
     public decimal BundlePrice { get; set; }
 
     public Promotion(int bundleQuantity, decimal bundlePrice)
