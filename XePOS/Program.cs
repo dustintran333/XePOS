@@ -1,6 +1,6 @@
-﻿using XePOS.Application;
-using XePOS.Application.Data;
+﻿using XePOS.Application.Data;
 using XePOS.Application.Extensions;
+using XePOS.Application.Services;
 
 var terminal = new PointOfSaleTerminal();
 
@@ -8,8 +8,6 @@ var terminal = new PointOfSaleTerminal();
 var list = PricingData.GetData();
 terminal.SetPricing(list);
 
-// Todo: cases
-// empty cart
 var scanOrder = "ABCDABA";
 
 foreach (var code in scanOrder) terminal.ScanProduct(code.ToString());

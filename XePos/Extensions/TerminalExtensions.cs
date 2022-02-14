@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using XePOS.Application.Services;
 
 namespace XePOS.Application.Extensions;
 

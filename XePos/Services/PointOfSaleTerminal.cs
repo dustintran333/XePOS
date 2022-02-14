@@ -1,16 +1,16 @@
 ﻿using System.Collections.Concurrent;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using XePOS.Application.Entities;
+using XePOS.Application.Extensions;
 
-namespace XePOS.Application;
+namespace XePOS.Application.Services;
 
 public class PointOfSaleTerminal
 {
     /// <summary>
     /// Product pricing information
     /// </summary>
-    private IList<Product> _productPricing;
+    private IList<Product> _productPricingList;
 
     /// <summary>
     /// Store (Product, Quantity) as (Key, Value) pair
@@ -19,23 +19,23 @@ public class PointOfSaleTerminal
 
     public PointOfSaleTerminal()
     {
-        _productPricing = new List<Product>();
+        _productPricingList = new List<Product>();
         _cart = new ConcurrentDictionary<Product, int>();
     }
 
-    public IList<Product> SetPricing(IList<Product> productPricing)
+    public IList<Product> SetPricing(IList<Product> productPricingList)
     {
-        // product code must be unique
-        if (productPricing.DistinctBy(p => p.Code).Count() != productPricing.Count())
+        // Test validations
+        if (!productPricingList.IsPricingDataValid())
+            throw new ArgumentException("Pricing data is invalid");
+
+        // Test uniqueness
+        if (productPricingList.DistinctBy(p => p.Code).Count() != productPricingList.Count())
             throw new ArgumentException("Product code must be unique");
 
-        // ToDo: if price < 0 throw exception
-        // ToDo: use validation
-        //var _ = new ValidationContext();
-
-        // set pricing
-        _productPricing = productPricing;
-        return _productPricing;
+        // Set pricing
+        _productPricingList = productPricingList;
+        return _productPricingList;
     }
 
     /// <summary> Scan a product code</summary>
@@ -45,7 +45,7 @@ public class PointOfSaleTerminal
     {
         var p = GetProductPricing(code);
 
-        // add to/update cart
+        // Add to/update cart
         _cart.TryGetValue(p, out var val);
         _cart[p] = ++val;
 
@@ -68,9 +68,9 @@ public class PointOfSaleTerminal
         return _cart[p];
     }
 
-    public IList<Product> GetProductPricing() => _productPricing;
+    public IList<Product> GetProductPricing() => _productPricingList;
 
-    public Product GetProductPricing(string code) => _productPricing.First(p => p.Code == code);
+    public Product GetProductPricing(string code) => _productPricingList.First(p => p.Code == code);
 
     /// <summary>
     /// Calculate the cart's total price
