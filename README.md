@@ -11,7 +11,7 @@ For the sake of simplicity I store the data in a static class, so that it can be
 The main program covers the 3 minimal inputs. Additional input can be manually typed in for convenience purpose.
 ## Get started
 
-Clone the repo with either Visual Studio 2022 (recommended) or command line
+Clone the repo with either Visual Studio or command line
 
 ```bash
 git clone https://github.com/dustintran333/XePOS.git
