@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XePOS.Application", "XePOS\XePOS.Application.csproj", "{EE90EEB9-3AE0-46DB-A4B8-FF3F143F0C62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XePos.Tests", "XePos.Tests\XePos.Tests.csproj", "{3C584521-C2D3-479F-A37B-67996C11122D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XePOS.Tests", "XePos.Tests\XePOS.Tests.csproj", "{3C584521-C2D3-479F-A37B-67996C11122D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
