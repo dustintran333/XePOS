@@ -4,9 +4,7 @@ namespace XePOS.Application.Interfaces;
 
 public interface IPointOfSaleTerminal
 {
-    /// <summary>
-    /// Return the current pricing list
-    /// </summary>
+    /// <returns> The current pricing list </returns>
     IList<Product> GetProductPricing();
 
     /// <param name="code">The product code</param>
