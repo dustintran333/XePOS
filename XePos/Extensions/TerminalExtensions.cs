@@ -6,21 +6,21 @@ namespace XePOS.Application.Extensions;
 [ExcludeFromCodeCoverage]
 public static class TerminalExtensions
 {
-    /// <summary>
-    /// Scan multiple products
-    /// </summary>
+    /// <summary> Scan multiple products </summary>
+    /// <exception cref="ArgumentException"> Thrown when the code is null or empty </exception>
     public static void ScanProductRange(this PointOfSaleTerminal terminal, string? products)
     {
-        Console.WriteLine(string.IsNullOrEmpty(products) ? "Cart is empty" : $"Scanned products: {products}");
+        if (string.IsNullOrEmpty(products)) throw new ArgumentException("Codes cannot be null or empty");
+        
         _ = products?.Select(c => terminal.ScanProduct(c.ToString())).ToArray();
+        
+        Console.WriteLine($"Scanned product{(products.Length > 1 ? "s" : "")}: {products}");
     }
 
-    /// <summary>
-    /// Print total price and clear the cart for the next scan
-    /// </summary>
+    /// <summary> Print total price and clear the cart for the next scan </summary>
     public static void PrintCheckout(this PointOfSaleTerminal terminal)
     {
-        Console.WriteLine($"> Total price: {terminal.CalculateTotal()}");
+        Console.WriteLine($"> Total price: {terminal.CalculateTotal()}\n");
         terminal.ClearCart();
     }
 }

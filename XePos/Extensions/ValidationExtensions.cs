@@ -30,5 +30,5 @@ public static class ValidationExtensions
     }
 
     public static bool IsPricingDataValid(this IList<Product> pricingList) =>
-        !pricingList.Any(p => ValidateProductPricing(p).Count > 0);
+        pricingList.Count > 0 && !pricingList.Any(p => ValidateProductPricing(p).Count > 0);
 }

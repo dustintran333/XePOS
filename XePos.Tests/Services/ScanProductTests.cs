@@ -7,18 +7,30 @@ namespace XePos.Tests.Services
     public class ScanProductTests : TestBase
     {
         [Theory]
-        [InlineData("F")]
-        public void Terminal_ScanProduct_WithInvalidCode_ThrowInvalidOperationException(string code)
+        [InlineData("")]
+        [InlineData(null)]
+        public void Terminal_ScanProduct_WithNullOrEmptyCode_ThrowsArgumentException(string code)
         {
             // Arrange
             TestSetup();
 
             // Act & Assert
-            Assert.Throws<InvalidOperationException>(() => Terminal.GetProductPricing(code));
+            Assert.Throws<ArgumentException>(() => Terminal.ScanProduct(code));
+        }
+
+        [Theory]
+        [InlineData("F")]
+        public void Terminal_ScanProduct_WithWrongCode_ThrowsInvalidOperationException(string code)
+        {
+            // Arrange
+            TestSetup();
+
+            // Act & Assert
+            Assert.Throws<InvalidOperationException>(() => Terminal.ScanProduct(code));
         }
 
         [Fact]
-        public void Terminal_Scan1Product_Return1()
+        public void Terminal_Scan1Product_Returns1()
         {
             // Arrange
             TestSetup();
@@ -29,7 +41,7 @@ namespace XePos.Tests.Services
 
         [Theory]
         [InlineData(new[] { "A", "A", "A" }, 3)]
-        public void Terminal_ScanNProduct_ReturnN(string[] codes, int expected)
+        public void Terminal_ScanNProduct_ReturnsN(string[] codes, int expected)
         {
             // Arrange
             TestSetup();

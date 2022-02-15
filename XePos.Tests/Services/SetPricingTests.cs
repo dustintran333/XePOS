@@ -10,7 +10,7 @@ namespace XePos.Tests.Services;
 public class SetPricingTests
 {
     [Fact]
-    public void Terminal_SetPricing_ReturnPricing()
+    public void Terminal_SetPricing_ReturnsPricing()
     {
         // Arrange
         var terminal = new PointOfSaleTerminal();
@@ -30,7 +30,7 @@ public class SetPricingTests
     
     [Theory]
     [InlineData(-1.0)]
-    public void Terminal_SetPricing_WithNegativePrice_ThrowArgumentException(decimal price)
+    public void Terminal_SetPricing_WithNegativePrice_ThrowsArgumentException(decimal price)
     {
         // Arrange
         var terminal = new PointOfSaleTerminal();
@@ -43,7 +43,7 @@ public class SetPricingTests
     }
 
     [Fact]
-    public void Terminal_SetPricing_WithCodeNotUnique_ThrowArgumentException()
+    public void Terminal_SetPricing_WithCodeNotUnique_ThrowsArgumentException()
     {
         // Arrange
         var terminal = new PointOfSaleTerminal();
@@ -56,13 +56,22 @@ public class SetPricingTests
             new() { Code = "A", Price = 4.25m }
         }));
     }
-
+    
     [Fact]
-    public void Terminal_NotSetPricing_ReturnEmptyList()
+    public void Terminal_SetPricing_WithEmptyPricingList_ThrowsArgumentException()
     {
         // Arrange
         var terminal = new PointOfSaleTerminal();
 
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => terminal.SetPricing(new List<Product>())); 
+    }
+
+    [Fact]
+    public void Terminal_NotSetPricing_ReturnsEmptyList()
+    {
+        // Arrange
+        var terminal = new PointOfSaleTerminal();
 
         // Act & Assert
         Assert.Empty(terminal.GetProductPricing());

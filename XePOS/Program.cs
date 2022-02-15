@@ -4,34 +4,46 @@ using XePOS.Application.Services;
 
 var terminal = new PointOfSaleTerminal();
 
-// initialize list
+// Initialize list
 var list = PricingData.GetData();
 terminal.SetPricing(list);
 
+
+// Sample input
 var scanOrder = "ABCDABA";
-
-foreach (var code in scanOrder) terminal.ScanProduct(code.ToString());
-
+foreach (var code in scanOrder)
+    terminal.ScanProduct(code.ToString());
 var result = terminal.CalculateTotal();
 
-Console.WriteLine("Scan order: " + scanOrder);
-Console.WriteLine("Total price: " + result);
+Console.WriteLine("Scanned products: " + scanOrder);
+Console.WriteLine("> Total price: " + result);
 
 terminal.ClearCart();
 
 
-//using terminal extensions
-
+// Using terminal extensions
 terminal.ScanProductRange("CCCCCCC");
 terminal.PrintCheckout();
-
 terminal.ScanProductRange("ABCD");
 terminal.PrintCheckout();
 
-terminal.ScanProductRange("");
-terminal.PrintCheckout();
+// Taking user input
+while (true)
+{
 
-terminal.ScanProductRange(null);
-terminal.PrintCheckout();
-
-Console.ReadLine();
+    Console.Write("Input a case-sensitive scan sequence (A, B, C, D): ");
+    try
+    {
+        terminal.ScanProductRange(Console.ReadLine());
+        terminal.PrintCheckout();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex switch
+        {
+            ArgumentException => "No product to scan\n",
+            InvalidOperationException => "Wrong product code\n",
+            _ => ex.ToString()
+        });
+    }
+}
