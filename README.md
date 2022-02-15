@@ -33,6 +33,6 @@ foreach (var code in scanOrder)
     terminal.ScanProduct(code.ToString());
 var result = terminal.CalculateTotal();
 
-terminal.ScanProductRange("CCCCCCC"); // convenient method, single character code only
+terminal.ScanProductRange("CCCCCCC"); // convenience method, single character code only
 terminal.PrintCheckout(); // print the total and clear cart
 ```
